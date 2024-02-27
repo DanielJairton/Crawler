@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nU6tzZpfxMrpOH6ydDM9QJZ01E4hUAWmCeeeKNayaEP7F8pQ5XuSMBc2k/WC1+UN1hn6YHh1ZCvkIc5PLG/9qw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tarde.cetafaju\\Desktop\\Projetos\\Daniel Jairton\\Crawler\\Crawler\\Crawler.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tarde.cetafaju\\.nuget\\packages\\htmlagilitypack\\1.11.59\\htmlagilitypack.1.11.59.nupkg.sha512"
+  ],
+  "logs": []
+}

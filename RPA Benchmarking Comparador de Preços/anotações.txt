@@ -1,0 +1,9 @@
+DESAFIO
+
+Seu desafio é desenvolver um ROBÔ (RPA) que
+fique ligado 24 horas para comparar preços de
+produto entre dois sites de vendas de produtos.
+
+Tecnologias
+
+Obrigatoriamente usar .NET, Csharp, SQL Server
