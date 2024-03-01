@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace WebScrapping.Migrations
 {
-    [DbContext(typeof(Progam.LogContext))]
+    [DbContext(typeof(LogContext))]
     partial class LogContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace WebScrapping.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Progam+Log", b =>
+            modelBuilder.Entity("Log", b =>
                 {
                     b.Property<int>("IdLog")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,10 @@ namespace WebScrapping.Migrations
                     b.Property<DateTime>("DateLog")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IngLog")
+                    b.Property<int>("IdProd")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InfLog")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -47,9 +50,6 @@ namespace WebScrapping.Migrations
                     b.Property<string>("UsuRob")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("idProd")
-                        .HasColumnType("int");
 
                     b.HasKey("IdLog");
 

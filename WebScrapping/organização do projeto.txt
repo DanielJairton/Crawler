@@ -1,0 +1,28 @@
+Pastas
+
+Utils
+
+Data
+
+   -Context
+
+Models
+
+   -Produto
+   -Log
+
+Scraper
+
+   -webscrapper mercado livre
+   -webscrapper magazine luiza
+
+Comparison
+
+   -Benchmarking
+
+Send
+
+   -Send email
+   -Send phone
+
+10/03
