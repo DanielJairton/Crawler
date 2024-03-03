@@ -2159,23 +2159,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tarde.cetafaju\\.nuget\\packages\\": {},
+    "C:\\Users\\Danie\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tarde.cetafaju\\Desktop\\Projetos\\Daniel Jairton\\WebScrapping\\WebScrapping\\WebScrapping.csproj",
+      "projectUniqueName": "C:\\Users\\Danie\\Documents\\GitHub\\Crawler\\WebScrapping\\WebScrapping.csproj",
       "projectName": "WebScrapping",
-      "projectPath": "C:\\Users\\tarde.cetafaju\\Desktop\\Projetos\\Daniel Jairton\\WebScrapping\\WebScrapping\\WebScrapping.csproj",
-      "packagesPath": "C:\\Users\\tarde.cetafaju\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tarde.cetafaju\\Desktop\\Projetos\\Daniel Jairton\\WebScrapping\\WebScrapping\\obj\\",
+      "projectPath": "C:\\Users\\Danie\\Documents\\GitHub\\Crawler\\WebScrapping\\WebScrapping.csproj",
+      "packagesPath": "C:\\Users\\Danie\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Danie\\Documents\\GitHub\\Crawler\\WebScrapping\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\tarde.cetafaju\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2245,7 +2245,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

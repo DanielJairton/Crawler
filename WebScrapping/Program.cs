@@ -20,7 +20,13 @@ public class LogContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=PC03LAB2524\\SENAI; Database=WebScrapingDb2; User Id=sa; Password=senai.123;"); // Substitua pela sua string de conexão
+        //optionsBuilder.UseSqlServer("Server=PC03LAB2524\\SENAI; Database=WebScrapingDb2; User Id=sa; Password=senai.123;"); // Substitua pela sua string de conexão
+        optionsBuilder.UseSqlServer(
+            @"Data Source=SQL9001.site4now.net;" +
+            "Initial Catalog=db_aa5b20_apialmoxarifado;" +
+            "User id=db_aa5b20_apialmoxarifado_admin;" +
+            "Password=master@123"
+        );
     }
 }
 
