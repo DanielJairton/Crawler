@@ -30,6 +30,7 @@ public class MagazineLuizaScraper
 
                 // Aguarda um tempo fixo para permitir que a página seja carregada (você pode ajustar conforme necessário)
                 //15 segundos para o senai, 45 para minha casa, 20 segundos para garantir que dá tempo de rodar no computador de Reginaldo sem demorar demais
+                //System.Threading.Thread.Sleep(5000);
                 //System.Threading.Thread.Sleep(45000);
                 System.Threading.Thread.Sleep(20000);
 

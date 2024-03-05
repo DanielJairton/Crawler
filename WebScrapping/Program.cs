@@ -19,12 +19,8 @@ class Program
 {
     // Lista para armazenar produtos já verificados
     static List<Produto> produtosVerificados = new List<Produto>();
-    
-    //static List<string> listaProdutosVerificados = new List<string>{};
 
     private static string emailDestinatario = "";
-
-    //string emailDestinatario = "";
 
     static void Main(string[] args)
     {
@@ -34,12 +30,6 @@ class Program
 
         // Criar um temporizador que dispara a cada 5 minutos
         Timer timer = new Timer(VerificarNovoProduto, null, 0, intervalo);
-
-        // Manter a aplicação rodando
-        /*
-        //Console.WriteLine("Pressione qualquer tecla para sair...");
-        //Console.Read();
-        */
 
         //Manter a aplicação rodando
         Thread.Sleep(Timeout.Infinite);
@@ -103,20 +93,18 @@ class Program
                     foreach (Produto produto in novosProdutos)
                     {
                         if (!produtosVerificados.Exists(p => p.Id == produto.Id))
-                        //if (!listaProdutosVerificados.Exists(p => p == Convert.ToString(produto.Id)))
                         {
                             // Se é um novo produto, faça algo com ele
                             Console.WriteLine($"Produto encontrado: ID {produto.Id}, Nome: {produto.Nome}");
-                            // Adicionar o produto à lista de produtos verificados
-                            produtosVerificados.Add(produto);
-                            //listaProdutosVerificados.Add(Convert.ToString(produto.Id));
 
-                            // Registra um log no banco de dados apenas se o produto for novo
+                            // Registra um log no banco de dados apenas se o produto não tiver sido registrado
+                            //com o email enviado com sucesso pelo meu robo e usuario
                             //if (!ProdutoJaRegistrado(produto.Id))
 
-                            //Não checa no banco de dados se a registros
+                            //Não checa no banco de dados se há registros
                             if (1 > 0)
                             {
+
                                 RegistrarLog("rDj1", "DanielJ", DateTime.Now, "ConsultaAPI - Verificar Produto", "Sucesso", produto.Id);
 
                                 MercadoLivreScraper mercadoLivreScraper = new MercadoLivreScraper();
@@ -133,7 +121,6 @@ class Program
                                 string linkProdutoMagazineLuiza = listaMagazineLuiza[1];
                                 string nomeProdutoMagazineLuiza = listaMagazineLuiza[2];
 
-
                                 try
                                 {
                                     //Compara os preços e receber a string com a melhor compra
@@ -145,16 +132,20 @@ class Program
 
                                         //Mandar email e registrar o Log
                                         //O email outlook tem um limite de emails diários, que quando ultrapassado precisa receber um código enviado ao celular
+                                        //para não ser bloqueado por spam
                                         SendEmail.EnviarEmail(nomeProdutoMercadoLivre, precoObtidoMercadoLivre, linkProdutoMercadoLivre, nomeProdutoMagazineLuiza,
                                             precoObtidoMagazineLuiza, linkProdutoMagazineLuiza, produto.Nome, melhorCompraEmail, emailDestinatario);
 
                                         //Registrar sucesso ao enviar Email
-                                        RegistrarLog("rDj1", "DanielJ", DateTime.Now, "Enviar Email", "Sucesso", produto.Id);
+                                        RegistrarLog("rDj1", "DanielJ", DateTime.Now, "EnvioEmail", "Sucesso", produto.Id);
+
+                                        // Adicionar o produto à lista de produtos verificados
+                                        produtosVerificados.Add(produto);
                                     }
                                     catch (Exception exEnviarEmail)
                                     {
                                         //Registrar e mostrar erro
-                                        RegistrarLog("rDj1", "DanielJ", DateTime.Now, "Enviar Email", "Erro", produto.Id);
+                                        RegistrarLog("rDj1", "DanielJ", DateTime.Now, "EnvioEmail", "Erro", produto.Id);
                                         Console.WriteLine($"Erro ao enviar email: {exEnviarEmail.Message}");
                                     }
 
@@ -192,12 +183,16 @@ class Program
         return produtos;
     }
 
-    // Método para verificar se o produto já foi registrado no banco de dados
+    // Método para verificar se o produto já foi registrado no banco de dados usa o
+    //IdProdutoApi, CodigoRobo, UsuarioRobo, Etapa e InformacaoLog
+    //para verificar se o produto já foi registrago e teve seu email enviado com sucesso
     static bool ProdutoJaRegistrado(int idProduto)
     {
         using (var context = new LogContext())
         {
-            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto);
+            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto &&
+                log.CodigoRobo == "rDj1" && log.UsuarioRobo == "DanielJ" &&
+                log.Etapa == "EnvioEmail" && log.InformacaoLog == "Sucesso");
         }
     }
 
