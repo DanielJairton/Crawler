@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using WebScrapping.Data;
 
 #nullable disable
 
 namespace WebScrapping.Migrations
 {
     [DbContext(typeof(LogContext))]
-    [Migration("20240228172553_CretaeDatabase3")]
-    partial class CretaeDatabase3
+    [Migration("20240304172403_LaunchDatabase")]
+    partial class LaunchDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,39 +24,39 @@ namespace WebScrapping.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Log", b =>
+            modelBuilder.Entity("WebScrapping.Models.LOGROBO", b =>
                 {
-                    b.Property<int>("IdLog")
+                    b.Property<int>("iDlOG")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLog"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("iDlOG"), 1L, 1);
 
-                    b.Property<string>("CodRob")
+                    b.Property<string>("CodigoRobo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateLog")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdProd")
+                    b.Property<string>("Etapa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdProdutoAPI")
                         .HasColumnType("int");
 
-                    b.Property<string>("InfLog")
+                    b.Property<string>("InformacaoLog")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Processo")
+                    b.Property<string>("UsuarioRobo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsuRob")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("iDlOG");
 
-                    b.HasKey("IdLog");
-
-                    b.ToTable("Logs");
+                    b.ToTable("LOGROBO");
                 });
 #pragma warning restore 612, 618
         }

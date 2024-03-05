@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System;
+using WebScrapping.Data;
 using WebScrapping.Models;
 
 public class MercadoLivreScraper
@@ -27,14 +28,14 @@ public class MercadoLivreScraper
             {
                 Console.WriteLine("Link Mercado Livre produto pesquisa obtido");
             }
-            else 
+            else
             {
                 Console.WriteLine("Link Mercado Livre produto pesquisa não obtido");
                 return null;
             }
 
             // Verifica se o elemento foi encontrado
-            if (firstProductPriceNode != null )
+            if (firstProductPriceNode != null)
             {
                 // Obtém o preço do primeiro produto
                 string firstProductPrice = firstProductPriceNode.InnerText.Trim();
@@ -63,7 +64,7 @@ public class MercadoLivreScraper
                     $"{firstProductName}"
                 };
 
-                // Retorna o preço
+                // Retorna o preço, link e nome
                 return lista;
             }
             else
@@ -87,20 +88,20 @@ public class MercadoLivreScraper
         }
     }
 
-    public void RegistrarLog(string codRob, string usuRob, DateTime dateLog, string processo, string infLog, int idProd)
+    public void RegistrarLog(string codigoRobo, string usuarioRobo, DateTime dateLog, string etapa, string informacaoLog, int idProdutoAPI)
     {
         using (var context = new LogContext())
         {
-            var log = new Log
+            var log = new LOGROBO
             {
-                CodRob = codRob,
-                UsuRob = usuRob,
+                CodigoRobo = codigoRobo,
+                UsuarioRobo = usuarioRobo,
                 DateLog = dateLog,
-                Processo = processo,
-                InfLog = infLog,
-                IdProd = idProd
+                Etapa = etapa,
+                InformacaoLog = informacaoLog,
+                IdProdutoAPI = idProdutoAPI
             };
-            context.Logs.Add(log);
+            context.LOGROBO.Add(log);
             context.SaveChanges();
         }
     }

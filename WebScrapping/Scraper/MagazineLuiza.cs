@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using WebScrapping.Data;
 using WebScrapping.Models;
 
 public class MagazineLuizaScraper
@@ -9,14 +10,28 @@ public class MagazineLuizaScraper
     {
         try
         {
+            // Define as opções do ChromeDriver
+            ChromeOptions options = new ChromeOptions();
+
+            // Adiciona a flag --enable-chrome-browser-cloud-management
+            options.AddArgument("--enable-chrome-browser-cloud-management");
+
+            // Desabilite
+            options.AddArgument("--disable-web-security");
+            options.AddArgument("--ignore-certificate-errors");
+
             // Inicializa o ChromeDriver
-            using (IWebDriver driver = new ChromeDriver())
+            using (IWebDriver driver = new ChromeDriver(options))
             {
+                driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(120); // Aumento do tempo limite para 120 segundos
+
                 // Abre a página
                 driver.Navigate().GoToUrl($"https://www.magazineluiza.com.br/busca/{descricaoProduto}");
 
                 // Aguarda um tempo fixo para permitir que a página seja carregada (você pode ajustar conforme necessário)
-                System.Threading.Thread.Sleep(5000);
+                //15 segundos para o senai, 45 para minha casa, 20 segundos para garantir que dá tempo de rodar no computador de Reginaldo sem demorar demais
+                //System.Threading.Thread.Sleep(45000);
+                System.Threading.Thread.Sleep(20000);
 
                 // Encontra o elemento que possui o atributo data-testid
                 IWebElement priceElement = driver.FindElement(By.CssSelector("[data-testid='price-value']"));
@@ -28,7 +43,7 @@ public class MagazineLuizaScraper
                 IWebElement titleElement = driver.FindElement(By.CssSelector("h2[data-testid='product-title']"));
 
                 // Verifica se o elemento foi encontrado
-                if (priceElement != null && linkElement != null)
+                if (priceElement != null && linkElement != null && titleElement != null)
                 {
                     // Obtém o preço do primeiro produto
                     string firstProductPrice = priceElement.Text;
@@ -56,16 +71,13 @@ public class MagazineLuizaScraper
                         $"{firstProductName}"
                     };
 
-                    // Retorna o preço
-                    //return firstProductPrice;
-
-                    //Retorna lista com o preço e link
+                    //Retorna lista com o preço, link e nome
                     return lista;
 
                 }
                 else
                 {
-                    Console.WriteLine("Preço não encontrado.");
+                    Console.WriteLine("Preço Magazine Luiza não encontrado.");
 
                     // Registra o log com o ID do produto
                     RegistrarLog("rDj1", "DanielJ", DateTime.Now, "WebScraping - Magazine Luiza", "Preço não encontrado", idProduto);
@@ -85,21 +97,21 @@ public class MagazineLuizaScraper
         }
     }
 
-    private static void RegistrarLog(string codRob, string usuRob, DateTime dateLog, string processo, string infLog, int idProd)
+    private static void RegistrarLog(string codigoRobo, string usuarioRobo, DateTime dateLog, string etapa, string informacaoLog, int idProdutoAPI)
     {
 
         using (var context = new LogContext())
         {
-            var log = new Log
+            var log = new LOGROBO
             {
-                CodRob = codRob,
-                UsuRob = usuRob,
+                CodigoRobo = codigoRobo,
+                UsuarioRobo = usuarioRobo,
                 DateLog = dateLog,
-                Processo = processo,
-                InfLog = infLog,
-                IdProd = idProd
+                Etapa = etapa,
+                InformacaoLog = informacaoLog,
+                IdProdutoAPI = idProdutoAPI
             };
-            context.Logs.Add(log);
+            context.LOGROBO.Add(log);
             context.SaveChanges();
         }
 

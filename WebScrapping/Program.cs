@@ -12,41 +12,37 @@ using System.ComponentModel.DataAnnotations;
 using static Program;
 using WebScrapping.Send;
 using WebScrapping.Models;
-
-// Classe de contexto do banco de dados
-public class LogContext : DbContext
-{
-    public DbSet<Log> Logs { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        //optionsBuilder.UseSqlServer("Server=PC03LAB2524\\SENAI; Database=WebScrapingDb2; User Id=sa; Password=senai.123;"); // Substitua pela sua string de conexão
-        optionsBuilder.UseSqlServer(
-            @"Data Source=SQL9001.site4now.net;" +
-            "Initial Catalog=db_aa5b20_apialmoxarifado;" +
-            "User id=db_aa5b20_apialmoxarifado_admin;" +
-            "Password=master@123"
-        );
-    }
-}
+using WebScrapping.Data;
+using OpenQA.Selenium.DevTools.V120.Network;
 
 class Program
 {
     // Lista para armazenar produtos já verificados
     static List<Produto> produtosVerificados = new List<Produto>();
+    
+    //static List<string> listaProdutosVerificados = new List<string>{};
+
+    private static string emailDestinatario = "";
+
+    //string emailDestinatario = "";
 
     static void Main(string[] args)
     {
+
         // Definir o intervalo de tempo para 5 minutos (300.000 milissegundos)
         int intervalo = 300000;
-        //int intervalo = 6000;
 
         // Criar um temporizador que dispara a cada 5 minutos
         Timer timer = new Timer(VerificarNovoProduto, null, 0, intervalo);
 
         // Manter a aplicação rodando
-        Console.WriteLine("Pressione qualquer tecla para sair...");
-        Console.ReadKey();
+        /*
+        //Console.WriteLine("Pressione qualquer tecla para sair...");
+        //Console.Read();
+        */
+
+        //Manter a aplicação rodando
+        Thread.Sleep(Timeout.Infinite);
     }
 
     static async void VerificarNovoProduto(object state)
@@ -73,19 +69,53 @@ class Program
                     // Ler o conteúdo da resposta como uma string
                     string responseData = await response.Content.ReadAsStringAsync();
 
+                    
+                    //Teste sse o email do destinatário já foi informadp
+                    if (emailDestinatario == "")
+                    {
+                        // Ler o email do destinatário
+                        Console.WriteLine("Digite o Email do destinátario:");
+
+                        //Variável para o loop while
+                        int testDestinataior = 0;
+                        // o loop é parado quando uma linha não vazia é inserida
+                        while (testDestinataior == 0)
+                        {
+                            emailDestinatario = Console.ReadLine();
+                            if (emailDestinatario == "")
+                            {
+                                Console.WriteLine("Erro: texto vazio, por favor digite o email do destinátario:");
+                            }
+                            //Se a linha não é vazia para o loop
+                            else
+                            {
+                                testDestinataior = 1;
+                            }
+                        }
+
+                        
+                    }
+
+                    //Console.Write("\n\nNovo ciclo\n\n");
+
                     // Processar os dados da resposta
                     List<Produto> novosProdutos = ObterNovosProdutos(responseData);
                     foreach (Produto produto in novosProdutos)
                     {
                         if (!produtosVerificados.Exists(p => p.Id == produto.Id))
+                        //if (!listaProdutosVerificados.Exists(p => p == Convert.ToString(produto.Id)))
                         {
                             // Se é um novo produto, faça algo com ele
                             Console.WriteLine($"Produto encontrado: ID {produto.Id}, Nome: {produto.Nome}");
                             // Adicionar o produto à lista de produtos verificados
                             produtosVerificados.Add(produto);
+                            //listaProdutosVerificados.Add(Convert.ToString(produto.Id));
 
                             // Registra um log no banco de dados apenas se o produto for novo
-                            if (!ProdutoJaRegistrado(produto.Id))
+                            //if (!ProdutoJaRegistrado(produto.Id))
+
+                            //Não checa no banco de dados se a registros
+                            if (1 > 0)
                             {
                                 RegistrarLog("rDj1", "DanielJ", DateTime.Now, "ConsultaAPI - Verificar Produto", "Sucesso", produto.Id);
 
@@ -103,7 +133,7 @@ class Program
                                 string linkProdutoMagazineLuiza = listaMagazineLuiza[1];
                                 string nomeProdutoMagazineLuiza = listaMagazineLuiza[2];
 
-                                
+
                                 try
                                 {
                                     //Compara os preços e receber a string com a melhor compra
@@ -112,15 +142,16 @@ class Program
 
                                     try
                                     {
+
                                         //Mandar email e registrar o Log
                                         //O email outlook tem um limite de emails diários, que quando ultrapassado precisa receber um código enviado ao celular
-                                        SendEmail.EnviarEmail(nomeProdutoMercadoLivre, precoObtidoMercadoLivre, linkProdutoMercadoLivre, nomeProdutoMagazineLuiza, 
-                                            precoObtidoMagazineLuiza, linkProdutoMagazineLuiza,produto.Nome, melhorCompraEmail, "danielTesteSenai@outlook.com");
+                                        SendEmail.EnviarEmail(nomeProdutoMercadoLivre, precoObtidoMercadoLivre, linkProdutoMercadoLivre, nomeProdutoMagazineLuiza,
+                                            precoObtidoMagazineLuiza, linkProdutoMagazineLuiza, produto.Nome, melhorCompraEmail, emailDestinatario);
 
                                         //Registrar sucesso ao enviar Email
                                         RegistrarLog("rDj1", "DanielJ", DateTime.Now, "Enviar Email", "Sucesso", produto.Id);
                                     }
-                                    catch(Exception exEnviarEmail)
+                                    catch (Exception exEnviarEmail)
                                     {
                                         //Registrar e mostrar erro
                                         RegistrarLog("rDj1", "DanielJ", DateTime.Now, "Enviar Email", "Erro", produto.Id);
@@ -166,31 +197,31 @@ class Program
     {
         using (var context = new LogContext())
         {
-            return context.Logs.Any(log => log.IdProd == idProduto);
+            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto);
         }
     }
 
     // Método para registrar um log no banco de dados
-    static void RegistrarLog(string codRob, string usuRob, DateTime dateLog, string processo, string infLog, int idProd)
+    static void RegistrarLog(string codigoRobo, string usuarioRobo, DateTime dateLog, string etapa, string informacaoLog, int idProdutoAPI)
     {
         using (var context = new LogContext())
         {
-            var log = new Log
+            var log = new LOGROBO
             {
-                CodRob = codRob,
-                UsuRob = usuRob,
+                CodigoRobo = codigoRobo,
+                UsuarioRobo = usuarioRobo,
                 DateLog = dateLog,
-                Processo = processo,
-                InfLog = infLog,
-                IdProd = idProd
+                Etapa = etapa,
+                InformacaoLog = informacaoLog,
+                IdProdutoAPI = idProdutoAPI
             };
-            context.Logs.Add(log);
+            context.LOGROBO.Add(log);
             context.SaveChanges();
         }
     }
 
     //Compara preços e retorna uma string com a mensagem apropriada
-    public static string CompararPrecos(string precoTextoMercadoLivreTexto, string linkMercadoLivre,string precoTextoMagazineLuiza, string linkMagazineLuiza, string nomeProduto)
+    public static string CompararPrecos(string precoTextoMercadoLivreTexto, string linkMercadoLivre, string precoTextoMagazineLuiza, string linkMagazineLuiza, string nomeProduto)
     {
 
         if (precoTextoMercadoLivreTexto == null || precoTextoMagazineLuiza == null)
